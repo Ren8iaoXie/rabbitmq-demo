@@ -1,0 +1,79 @@
+server:
+  port: 1111
+mybatis:
+  typeAliasesPackage: com.xrb.rabbitmqdemo.**.model
+  mapperLocations: classpath*:static/dao/mapping/*.xml
+  #  sql日志打印
+  #  configuration:
+  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  setting:
+    logImpl: log4j2
+#spring:
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
+#    virtual-host: /
+#    listener:
+#      simple:
+#        acknowledge-mode: manual
+#    publisher-returns: true
+#    publisher-confirm-type: correlated
+zookeeper:
+  url: 127.0.0.1:2181
+  address: 127.0.0.1:2181
+  timeout: 4000
+
+#---
+#
+#spring:
+#  profiles:   develop
+#  datasource:
+#    url: jdbc:mysql://192.168.0.91:3306/fp_sass?allowMultiQueries=true&autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
+#    username: root
+#    password: Fengpai.2019
+#    filters: wall,mergeStat
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    druid:
+#      initialSize: 5
+#      minIdle: 5
+#      maxActive: 20
+#
+#---
+
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    listener:
+      simple:
+        acknowledge-mode: manual
+    publisher-returns: true
+    publisher-confirm-type: correlated
+#  profiles: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/study?allowMultiQueries=true&autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
+    username: root
+    password: 123456
+    filters: wall,mergeStat
+    #    type: com.alibaba.druid.pool.DruidDataSource
+    #    druid:
+    #      initialSize: 5
+    #      minIdle: 5
+    #      maxActive: 20
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 60
+      auto-commit: true
+      pool-name: DatebookHikariCP
+      idle-timeout: 60000
+      max-lifetime: 1800000
+      connection-timeout: 60000
+      connection-test-query: SELECT 1
+      validation-timeout: 3000

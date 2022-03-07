@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xrb.rabbitmqdemo.dao.SDao">
+
+  <insert id="batchAddStudent">
+    <foreach collection="list" separator=";" item="student">
+      insert into student(name,age) values (#{student.name},#{student.age})
+    </foreach>
+  </insert>
+
+  <select id="selectTimeoutMsg" resultType="com.xrb.rabbitmqdemo.model.MsgLog">
+    select id,status,try_count tryCount,msg_id msgId,
+      exchange,routing_key routingKey,msg
+    from msg_log
+    where status between 1 and 2
+  </select>
+
+  <update id="updateStatus">
+    update msg_log set status=#{i} and id=#{id}
+  </update>
+  <update id="updateTryCount">
+    update msg_log set try_count=try_count+1 ,gmt_next_try=now() where id=#{msgId}
+  </update>
+</mapper>

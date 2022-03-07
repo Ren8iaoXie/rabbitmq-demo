@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xrb.rabbitmqdemo.dao.MsgLogMapper">
+  <resultMap id="BaseResultMap" type="com.xrb.rabbitmqdemo.model.MsgLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="msg_id" jdbcType="VARCHAR" property="msgId" />
+    <result column="exchange" jdbcType="VARCHAR" property="exchange" />
+    <result column="routing_key" jdbcType="VARCHAR" property="routingKey" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="try_count" jdbcType="INTEGER" property="tryCount" />
+    <result column="gmt_next_try" jdbcType="TIMESTAMP" property="gmtNextTry" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xrb.rabbitmqdemo.model.MsgLog">
+    <result column="msg" jdbcType="LONGVARCHAR" property="msg" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, company_id, msg_id, exchange, routing_key, `status`, try_count, gmt_next_try, 
+    remark, gmt_create, gmt_modified
+  </sql>
+  <sql id="Blob_Column_List">
+    msg
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.xrb.rabbitmqdemo.model.MsgLogExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from msg_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xrb.rabbitmqdemo.model.MsgLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from msg_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from msg_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from msg_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xrb.rabbitmqdemo.model.MsgLogExample">
+    delete from msg_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xrb.rabbitmqdemo.model.MsgLog" useGeneratedKeys="true">
+    insert into msg_log (company_id, msg_id, exchange, 
+      routing_key, `status`, try_count, 
+      gmt_next_try, remark, gmt_create, 
+      gmt_modified, msg)
+    values (#{companyId,jdbcType=VARCHAR}, #{msgId,jdbcType=VARCHAR}, #{exchange,jdbcType=VARCHAR}, 
+      #{routingKey,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{tryCount,jdbcType=INTEGER}, 
+      #{gmtNextTry,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{msg,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xrb.rabbitmqdemo.model.MsgLog" useGeneratedKeys="true">
+    insert into msg_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="msgId != null">
+        msg_id,
+      </if>
+      <if test="exchange != null">
+        exchange,
+      </if>
+      <if test="routingKey != null">
+        routing_key,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="tryCount != null">
+        try_count,
+      </if>
+      <if test="gmtNextTry != null">
+        gmt_next_try,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="msg != null">
+        msg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="companyId != null">
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="msgId != null">
+        #{msgId,jdbcType=VARCHAR},
+      </if>
+      <if test="exchange != null">
+        #{exchange,jdbcType=VARCHAR},
+      </if>
+      <if test="routingKey != null">
+        #{routingKey,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="tryCount != null">
+        #{tryCount,jdbcType=INTEGER},
+      </if>
+      <if test="gmtNextTry != null">
+        #{gmtNextTry,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="msg != null">
+        #{msg,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xrb.rabbitmqdemo.model.MsgLogExample" resultType="java.lang.Long">
+    select count(*) from msg_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update msg_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.companyId != null">
+        company_id = #{record.companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msgId != null">
+        msg_id = #{record.msgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exchange != null">
+        exchange = #{record.exchange,jdbcType=VARCHAR},
+      </if>
+      <if test="record.routingKey != null">
+        routing_key = #{record.routingKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.tryCount != null">
+        try_count = #{record.tryCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.gmtNextTry != null">
+        gmt_next_try = #{record.gmtNextTry,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.msg != null">
+        msg = #{record.msg,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update msg_log
+    set id = #{record.id,jdbcType=BIGINT},
+      company_id = #{record.companyId,jdbcType=VARCHAR},
+      msg_id = #{record.msgId,jdbcType=VARCHAR},
+      exchange = #{record.exchange,jdbcType=VARCHAR},
+      routing_key = #{record.routingKey,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=TINYINT},
+      try_count = #{record.tryCount,jdbcType=INTEGER},
+      gmt_next_try = #{record.gmtNextTry,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      msg = #{record.msg,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update msg_log
+    set id = #{record.id,jdbcType=BIGINT},
+      company_id = #{record.companyId,jdbcType=VARCHAR},
+      msg_id = #{record.msgId,jdbcType=VARCHAR},
+      exchange = #{record.exchange,jdbcType=VARCHAR},
+      routing_key = #{record.routingKey,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=TINYINT},
+      try_count = #{record.tryCount,jdbcType=INTEGER},
+      gmt_next_try = #{record.gmtNextTry,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xrb.rabbitmqdemo.model.MsgLog">
+    update msg_log
+    <set>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="msgId != null">
+        msg_id = #{msgId,jdbcType=VARCHAR},
+      </if>
+      <if test="exchange != null">
+        exchange = #{exchange,jdbcType=VARCHAR},
+      </if>
+      <if test="routingKey != null">
+        routing_key = #{routingKey,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="tryCount != null">
+        try_count = #{tryCount,jdbcType=INTEGER},
+      </if>
+      <if test="gmtNextTry != null">
+        gmt_next_try = #{gmtNextTry,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="msg != null">
+        msg = #{msg,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xrb.rabbitmqdemo.model.MsgLog">
+    update msg_log
+    set company_id = #{companyId,jdbcType=VARCHAR},
+      msg_id = #{msgId,jdbcType=VARCHAR},
+      exchange = #{exchange,jdbcType=VARCHAR},
+      routing_key = #{routingKey,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=TINYINT},
+      try_count = #{tryCount,jdbcType=INTEGER},
+      gmt_next_try = #{gmtNextTry,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      msg = #{msg,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xrb.rabbitmqdemo.model.MsgLog">
+    update msg_log
+    set company_id = #{companyId,jdbcType=VARCHAR},
+      msg_id = #{msgId,jdbcType=VARCHAR},
+      exchange = #{exchange,jdbcType=VARCHAR},
+      routing_key = #{routingKey,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=TINYINT},
+      try_count = #{tryCount,jdbcType=INTEGER},
+      gmt_next_try = #{gmtNextTry,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
