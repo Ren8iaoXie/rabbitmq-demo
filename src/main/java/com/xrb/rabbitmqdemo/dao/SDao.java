@@ -20,4 +20,6 @@ public interface SDao {
     void updateStatus(@Param("id") String msgId, @Param("i") int i);
 
     void updateTryCount(String msgId);
+
+    Integer updateTryCount1();
 }

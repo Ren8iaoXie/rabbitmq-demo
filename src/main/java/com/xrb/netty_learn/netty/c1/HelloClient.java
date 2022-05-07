@@ -32,18 +32,18 @@ public class HelloClient {
                 //异步调用，
                 .connect(new InetSocketAddress("localhost", 9999));
         //需要主线程阻塞等待链接成功
-//        channelFuture
-//                .sync()
-//                .channel()
-//                .writeAndFlush("hello world");
+        channelFuture
+                .sync()
+                .channel()
+                .writeAndFlush("hello world");
 
-        channelFuture.addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                Channel channel = channelFuture.channel();
-                log.info("{}",channel);
-            }
-        });
+//        channelFuture.addListener(new ChannelFutureListener() {
+//            @Override
+//            public void operationComplete(ChannelFuture channelFuture) throws Exception {
+//                Channel channel = channelFuture.channel();
+//                log.info("{}",channel);
+//            }
+//        });
 
     }
 }

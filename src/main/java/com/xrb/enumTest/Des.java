@@ -1,7 +1,7 @@
 package com.xrb.enumTest;
 
+import cn.hutool.core.codec.Base64;
 import com.alibaba.fastjson.JSON;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;

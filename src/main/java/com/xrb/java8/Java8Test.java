@@ -35,14 +35,14 @@ import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.nio.channels.SelectionKey;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.function.Function;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
@@ -54,6 +54,7 @@ import java.util.stream.Stream;
  */
 @Slf4j
 public class Java8Test {
+
     /**
      * Function接口函数复合
      * andThen
@@ -239,6 +240,7 @@ public class Java8Test {
 
 
     public static void az(String paramString1, String paramString2) {
+
         try {
 // Create an array to hold the key
             byte[] encryptKey = "This is a test DESede key".getBytes();
@@ -294,25 +296,38 @@ public class Java8Test {
             System.out.println(s1);
         }
     }
-    @Test
-    public void  test12(){
-//
-        int[] a = new int[10];
-        a[0] = 0;
-        a[1] = 1;
-        a[2] = 2;
-        a[3] = 3;
-        System.arraycopy(a, 2, a, 3, 1);
-//        a[2]=99;
-        for (int i = 0; i < a.length; i++) {
-            System.out.print(a[i] + " ");
-        }
-//        HashMap<Integer, Object> objectObjectHashMap = new HashMap<>();
-//        for (int i = 0; i < 64; i++) {
-//            objectObjectHashMap.put(i,i);
-//        }
-    }
 
+    @Test
+    public void test12() {
+        Map<Thread, StackTraceElement[]> allStackTraces = Thread.getAllStackTraces();
+        for (Thread thread : allStackTraces.keySet()) {
+            
+        }
+    }
+    private static String MD5(String sourceStr) {
+        String result = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(sourceStr.getBytes());
+            byte b[] = md.digest();
+            int i;
+            StringBuffer buf = new StringBuffer("");
+            for (int offset = 0; offset < b.length; offset++) {
+                i = b[offset];
+                if (i < 0)
+                    i += 256;
+                if (i < 16)
+                    buf.append("0");
+                buf.append(Integer.toHexString(i));
+            }
+            result = buf.toString();
+            System.out.println("MD5(" + sourceStr + ",32) = " + result);
+            System.out.println("MD5(" + sourceStr + ",16) = " + buf.toString().substring(8, 24));
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println(e);
+        }
+        return result;
+    }
     /**
      * 获取token
      *
@@ -321,10 +336,10 @@ public class Java8Test {
     public static String getRequestEncrypt(Map queryParamMap) {
         //TODO http://172.18.20.87:88/getToken
         //TODO 测试地址
-        Map<String,String> queryMap=new HashMap<>();
+        Map<String, String> queryMap = new HashMap<>();
         String s = JSONObject.toJSONString(queryParamMap);
-        queryMap.put("string",s);
-        String postStr = HttpClientUtil.doPost("http://218.56.157.10:88/DESede",queryMap);
+        queryMap.put("string", s);
+        String postStr = HttpClientUtil.doPost("http://218.56.157.10:88/DESede", queryMap);
         log.info("一卡通获取request接口返回值:{}", postStr);
 //        if (ObjectUtil.isNotEmpty(postStr)) {
 //            JSONObject jsonObject = JSON.parseObject(postStr);
@@ -332,6 +347,7 @@ public class Java8Test {
 //        }
         return postStr;
     }
+
     @Test
     public void getBetweenMonth() {
         String validDateStr = "2021-10-13 00:00:00";
@@ -342,6 +358,7 @@ public class Java8Test {
         int validDateMonth = DateUtil.month(validDate);
         System.out.println(DateUtil.betweenDay(validDate, invalidDate, false));
     }
+
     /**
      * 替换前缀照片域名地址
      *
@@ -365,6 +382,7 @@ public class Java8Test {
         }
         return null;
     }
+
     //获取某段时间内的所有日期
     public static List<Date> findDates(Date dStart, Date dEnd) {
         Calendar cStart = Calendar.getInstance();

@@ -21,4 +21,8 @@
   <update id="updateTryCount">
     update msg_log set try_count=try_count+1 ,gmt_next_try=now() where id=#{msgId}
   </update>
+
+  <update id="updateTryCount1">
+    update msg_log set try_count=try_count-1 where id =26 and try_count>0
+  </update>
 </mapper>

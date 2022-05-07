@@ -13,7 +13,7 @@ import io.netty.handler.codec.string.StringDecoder;
  * @author xieren8iao
  * @date 2022/2/13 3:04 下午
  */
-public class HelloServer {
+public class HelloServer extends EventLoopClient{
     public static void main(String[] args) {
         //1.服务器构建
         new ServerBootstrap()
@@ -25,8 +25,8 @@ public class HelloServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-                        //添加具体handler
                         ch.pipeline().addLast(new StringDecoder());//讲ByteBuf转为字符串
+                        //添加具体handler
                         ch.pipeline().addLast(new ChannelInboundHandlerAdapter() { //自定义处理器
                             @Override
                             public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

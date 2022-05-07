@@ -50,7 +50,7 @@ public class Customer {
      */
     @RabbitListener(queues = "delay_queue")
     @Transactional
-    public void cfgUserReceiveDealy(RabbitmqDTO dto, Message message, Channel channel) throws IOException {
+     void cfgUserReceiveDealy(RabbitmqDTO dto, Message message, Channel channel) throws IOException {
         MessageProperties messageProperties = message.getMessageProperties();
         log.info("===============接收队列接收消息====================");
         log.info("接收时间:{},接受内容:{}", LocalDateTime.now(), dto);

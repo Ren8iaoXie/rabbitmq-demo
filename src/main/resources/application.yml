@@ -25,6 +25,23 @@ zookeeper:
   address: 127.0.0.1:2181
   timeout: 4000
 
+# 服务监控
+management:
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+strategy:
+  aliasMap:
+    1: strategy1
+    2: strategy2
+
 #---
 #
 #spring:
@@ -42,13 +59,17 @@ zookeeper:
 #
 #---
 
-
 spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    timeout: 5000
   rabbitmq:
-    host: localhost
+    host: 192.168.0.91
     port: 5672
-    username: guest
-    password: guest
+    username: admin
+    password: 123456
     virtual-host: /
     listener:
       simple:

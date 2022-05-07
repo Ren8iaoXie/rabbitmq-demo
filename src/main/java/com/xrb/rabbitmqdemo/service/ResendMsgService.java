@@ -28,7 +28,7 @@ public class ResendMsgService {
     /**
      * 每30s拉取投递失败的消息, 重新投递
      */
-    @Scheduled(cron = "0/10 * * * * ?")
+//    @Scheduled(cron = "0/10 * * * * ?")
     public void resend() {
         log.info("开始执行定时任务(重新投递消息)");
         List<MsgLog> msgLogs = sDao.selectTimeoutMsg();
